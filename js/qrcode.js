@@ -404,47 +404,43 @@ var qrcode = function() {
 			makeImpl(false, getBestMaskPattern() );
 		};
 
-		_this.createTableTag = function(cellSize, margin) {
+		_this.createTableElement = function(cellSize, margin) {
 
 			cellSize = cellSize || 2;
 			margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
 
-			var qrHtml = '';
-
-			qrHtml += '<table style="';
-			qrHtml += ' border-width: 0px; border-style: none;';
-			qrHtml += ' border-collapse: collapse;';
-			qrHtml += ' padding: 0px; margin: ' + margin + 'px;';
-			qrHtml += '">';
-			qrHtml += '<tbody>';
-
-			for (var r = 0; r < _this.getModuleCount(); r += 1) {
-
-				qrHtml += '<tr>';
-
-				for (var c = 0; c < _this.getModuleCount(); c += 1) {
-					qrHtml += '<td style="';
-					qrHtml += ' border-width: 0px; border-style: none;';
-					qrHtml += ' border-collapse: collapse;';
-					qrHtml += ' padding: 0px; margin: 0px;';
-					qrHtml += ' width: ' + cellSize + 'px;';
-					qrHtml += ' height: ' + cellSize + 'px;';
-					qrHtml += ' background-color: ';
-					qrHtml += _this.isDark(r, c)? '#000000' : '#ffffff';
-					qrHtml += ';';
-					qrHtml += '"/>';
-				}
-
-				qrHtml += '</tr>';
+			var tableElement = document.createElement('table');
+			tableElement.style.borderWidth = 0;
+			tableElement.style.borderStyle = 'none';
+			tableElement.style.borderCollapse = 'collapse';
+			tableElement.style.padding = 0;
+			tableElement.style.margin = margin + 'px';
+			
+			var tbodyElement = document.createElement('tbody');
+			tableElement.appendChild(tbodyElement);
+			
+			for (var r = 0, trElement; r < _this.getModuleCount(); r += 1) {
+			    trElement = document.createElement('tr');
+			    tbodyElement.appendChild(trElement);
+			    
+			    for (var c = 0, tdElement; c < _this.getModuleCount(); c += 1) {
+			        tdElement = document.createElement('td');
+			        trElement.appendChild(tdElement);
+			        tdElement.style.borderWidth = 0;
+			        tdElement.style.borderStyle = 'none';
+			        tdElement.style.borderCollapse = 'collapse';
+		            tdElement.style.padding = 0;
+		            tdElement.style.margin = 0;
+		            tdElement.style.width = cellSize + 'px';
+		            tdElement.style.height = cellSize + 'px';
+		            tdElement.style.backgroundColor = _this.isDark(r, c)? '#000' : '#fff';
+			    }
 			}
-
-			qrHtml += '</tbody>';
-			qrHtml += '</table>';
-
-			return qrHtml;
+			
+			return tableElement;
 		};
 
-		_this.createImgTag = function(cellSize, margin) {
+		_this.createImgElement = function(cellSize, margin) {
 
 			cellSize = cellSize || 2;
 			margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
@@ -453,7 +449,7 @@ var qrcode = function() {
 			var min = margin;
 			var max = size - margin;
 
-			return createImgTag(size, size, function(x, y) {
+			return createImgElement(size, size, function(x, y) {
 				if (min <= x && x < max && min <= y && y < max) {
 					var c = Math.floor( (x - min) / cellSize);
 					var r = Math.floor( (y - min) / cellSize);
@@ -462,6 +458,33 @@ var qrcode = function() {
 					return 1;
 				}
 			} );
+		};
+		
+		_this.createCanvasElement = function(cellSize, margin) {
+		    cellSize = cellSize || 2;
+            margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+		    
+            var moduleCount = _this.getModuleCount();
+            var size = moduleCount * cellSize + margin * 2;
+            var canvasElement = document.createElement('canvas');
+	        
+		    canvasElement.setAttribute('width', size);
+	        canvasElement.setAttribute('height', size);
+	        
+	        var context = canvasElement.getContext('2d');
+	        // Ensure that the background is white
+	        context.fillStyle = '#fff';
+	        context.fillRect(0, 0, size, size);
+	        
+	        for (var r = 0, y; r < moduleCount; r += 1) {
+	            y = margin + (r * cellSize);
+	            for (var c = 0, x; c < moduleCount; c += 1) {
+	                x = margin + (c * cellSize);
+	                context.fillStyle = _this.isDark(r, c)? '#000' : '#fff';
+	                context.fillRect(x, y, cellSize, cellSize);
+	            }
+	        }
+	        return canvasElement;
 		};
 
 		return _this;
@@ -1586,7 +1609,7 @@ var qrcode = function() {
 		return _this;
 	};
 
-	var createImgTag = function(width, height, getPixel, alt) {
+	var createImgElement = function(width, height, getPixel, alt) {
 
 		var gif = gifImage(width, height);
 		for (var y = 0; y < height; y += 1) {
@@ -1605,25 +1628,13 @@ var qrcode = function() {
 		}
 		base64.flush();
 
-		var img = '';
-		img += '<img';
-		img += '\u0020src="';
-		img += 'data:image/gif;base64,';
-		img += base64;
-		img += '"';
-		img += '\u0020width="';
-		img += width;
-		img += '"';
-		img += '\u0020height="';
-		img += height;
-		img += '"';
+		var img = document.createElement('img');
+		img.setAttribute('src', 'data:image/gif;base64,' + base64);
+		img.setAttribute('width', width);
+		img.setAttribute('height', height);
 		if (alt) {
-			img += '\u0020alt="';
-			img += alt;
-			img += '"';
+		    img.setAttribute('alt', alt);
 		}
-		img += '/>';
-
 		return img;
 	};
 
