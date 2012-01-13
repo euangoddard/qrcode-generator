@@ -61,7 +61,8 @@
         cellSize: 2,
         marginSize: 2,
         target: null,
-        outputType: null
+        outputType: null,
+        unicode: false
     };
     
     /**
@@ -87,6 +88,10 @@
                 }
             } else {
                 var sourceText = $element.text();
+            }
+            if (params.unicode===true) {
+                // encode unicode strings
+                sourceText = unescape(encodeURIComponent(sourceText));
             }
             
             if (!sourceText) {
