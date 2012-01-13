@@ -1,0 +1,266 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Documentation for $.qr()</title>
+        <meta http-equiv="content-type" content="text-html; charset=utf-8">
+        <style>
+            body, input, textarea {
+                font-family: Helvetica,arial,sans-serif;
+            }
+            section {
+                box-shadow: 0 0 10px #333;
+                margin: 1em;
+                padding: 0.1em 1em 0.5em;
+            }
+            article {
+                border-top: 1px dotted #999;
+                padding: 0 0.5em;
+            }
+            pre {
+                font-family: 'lucida console', 'Courier New', monospace;
+                font-size: 13px;
+                background: #eee;
+                color: #333;
+                padding: 0.5em;
+                
+            }
+            ol.inline-output {
+                list-style: none;
+                margin-left: 0;
+                padding-left: 0;
+            }
+            ol.inline-output li {
+                display: inline-block;
+                margin-right: 1em;
+                vertical-align: top;
+            }
+            .dark-background {
+                background: #999;
+            }
+            .hint, .warning {
+                border: 1px solid;
+                margin: 10px 0px;
+                padding:15px 10px 15px 50px;
+                background-repeat: no-repeat;
+                background-position: 10px center;
+            }
+            .hint {
+                color: #00529B;
+                background-color: #BDE5F8;
+                background-image: url('data:image/png;base64,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');
+            }
+            .warning {
+                color: #9F6000;
+                background-color: #FEEFB3;
+                background-image: url('data:image/png;base64,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');
+            }
+        </style>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+        <script src="js/qrcode.js"></script>
+        <script src="js/jquery.qr.js"></script>
+        <script>
+            $(function () {
+                $('pre').each(function () {
+                    eval($(this).text());
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <h1>Documentation for $.qr()</h1>
+        <section>
+            <h2>Defaults</h2>
+            <p>
+                The qr plugin does not require any parameters, it uses a set of
+                defaults which should work for most text lengths.
+            </p>
+            <p class="warning">
+                For large amounts of text, an overflow may occur.
+            </p>
+            <pre>$('#defaults').qr();</pre>
+            <div class="output" id="defaults">$('#defaults').qr with no options passed</div>
+        </section>
+        <!-- 
+        <section>
+            <h2>Unicode support</h2>
+            <p>
+                The qr plugin can encode any unicode string.
+            </p>
+            <pre>$('#unicode').qr();</pre>
+            <div class="output" id="unicode">私の名前はユアンです。</div>
+        </section>
+         -->
+        <section>
+            <h2>Options</h2>
+            <p>
+                Each of the options that the plug-in takes are details below
+            </p>
+            <article>
+                <h3>typeNumber</h3>
+                <p>
+                    The type of QR code can specified. This can be in the range 1-10
+                    (default 4)
+                </p>
+                <p class="hint">
+                    For larger amounts of data, you will need to increase this value
+                    to avoid overflow
+                </p>
+                <pre>$('.type_test').each(function () {
+    $(this).qr({typeNumber: $(this).data('type')});
+});</pre>
+                <ol class="inline-output">
+                    <li class="type_test" data-type="1">type test</li>
+                    <li class="type_test" data-type="2">type test</li>
+                    <li class="type_test" data-type="3">type test</li>
+                    <li class="type_test" data-type="4">type test</li>
+                    <li class="type_test" data-type="5">type test</li>
+                    <li class="type_test" data-type="6">type test</li>
+                    <li class="type_test" data-type="7">type test</li>
+                    <li class="type_test" data-type="8">type test</li>
+                    <li class="type_test" data-type="9">type test</li>
+                    <li class="type_test" data-type="10">type test</li>
+                </ol>
+            </article>
+            <article>
+            
+            <h3>errorCorrectLevel</h3>
+                <p>
+                    The amount of error correct used in the QR code can
+                    specified. This can be one of <em>'L','M','Q','H'</em>.
+                    (default <em>'M'</em>)
+                </p>
+                <p class="hint">
+                    For higher degrees of error correct, you may need to increase
+                    the value of typeNumber to avoid overflow
+                </p>
+                <pre>$('.error_correct_test').each(function () {
+    $(this).qr({errorCorrectLevel: $(this).data('error-correct-level')});
+});</pre>
+                <ol class="inline-output">
+                    <li class="error_correct_test" data-error-correct-level="L">error correct test</li>
+                    <li class="error_correct_test" data-error-correct-level="M">error correct test</li>
+                    <li class="error_correct_test" data-error-correct-level="Q">error correct test</li>
+                    <li class="error_correct_test" data-error-correct-level="H">error correct test</li>
+                </ol>
+            </article>
+            
+            <article>
+                <h3>cellSize</h3>
+                <p>
+                    To alter the size of the QR code, use the cellSize parameter
+                    (default 2). This value is in pixels.
+                </p>
+                <pre>$('.cell_size_test').each(function () {
+    $(this).qr({cellSize: $(this).data('cell-size')});
+});</pre>
+                <ol class="inline-output">
+                    <li class="cell_size_test" data-cell-size="1">cell size test</li>
+                    <li class="cell_size_test" data-cell-size="2">cell size test</li>
+                    <li class="cell_size_test" data-cell-size="3">cell size test</li>
+                    <li class="cell_size_test" data-cell-size="4">cell size test</li>
+                    <li class="cell_size_test" data-cell-size="5">cell size test</li>
+                    <li class="cell_size_test" data-cell-size="6">cell size test</li>
+                </ol>
+            </article>
+            <article>
+                <h3>marginSize</h3>
+                <p>
+                    A margin can be specified within the QR code itself (default 2).
+                    This value is in pixels.
+                </p>
+                <p class="hint">
+                    For most instances this can be dropped to 0 and CSS used instead.
+                </p>
+                
+                <pre>$('.margin_size_test').each(function () {
+    $(this).qr({marginSize: $(this).data('margin-size')});
+});</pre>
+                <ol class="inline-output dark-background">
+                    <li class="margin_size_test" data-margin-size="0">cell size test</li>
+                    <li class="margin_size_test" data-margin-size="1">cell size test</li>
+                    <li class="margin_size_test" data-margin-size="2">cell size test</li>
+                    <li class="margin_size_test" data-margin-size="3">cell size test</li>
+                    <li class="margin_size_test" data-margin-size="4">cell size test</li>
+                    <li class="margin_size_test" data-margin-size="5">cell size test</li>
+                </ol>
+            </article>
+            
+            <article>
+                <h3>source</h3>
+                <p>
+                    There are three options for dictating the source (i.e. input
+                    text) for the QR code.
+                </p>
+                <ul>
+                    <li>The textual contents of the element (default)</li>
+                    <li>Some specified text (i.e. a string)</li>
+                    <li>A callable which returns a string</li> 
+                </ul>
+                <h4>The contents of the element itself</h4>
+                <pre>$('#use-text').qr();</pre>
+                <div class="output" id="use-text">Text in this element</div>
+                
+                <h4>Specified text</h4>
+                <pre>$('#specified-text').qr({source: 'Something else'});</pre>
+                <div class="output" id="specified-text">Don't use this!</div>
+                
+                <h4>Text from a callable</h4>
+                <p>
+                    The function receives the element in question as <em>this</em>,
+                    so that further work can be done to access, e.g. attributes.
+                </p>
+                <pre>$('#generated-text').qr({source: function () { return this.attr('title'); }});</pre>
+                <div class="output" id="generated-text" title="Use the title instead">Don't use this!</div>
+            </article>
+            
+            <article>
+                <h3>target</h3>
+                <p>
+                    If you want to map the resulting QR code to one or more jQuery
+                    elements you can specify the target. By default this will be
+                    the element itself.
+                </p>
+                <pre>$('#multi-target').qr({target: $('.target')});</pre>
+                <p id="multi-target">This will be output on the targets</p>
+                <ol class="inline-output">
+                    <li class="target"></li>
+                    <li class="target"></li>
+                    <li class="target"></li>
+                </ol>
+            </article>
+            
+            <article>
+                <h3>outputType</h3>
+                <p>
+                    Three output types are supported by the plug-in. These are:
+                </p>
+                <ul>
+                    <li>canvas &mdash; requires compatible browser</li>
+                    <li>
+                        image &mdash; base64 encoded GIF, requires compatible
+                        browser
+                    </li>
+                    <li>table &mdash; should work cross-browser</li>
+                </ul>
+                <p>
+                    By default the plug-in will check the browser for compatibility
+                    with the various output formats working from the top of the
+                    above list downwards.
+                </p>
+                <p class="hint">
+                    Unless you require a particular output format (such as an image
+                    that can be saved from the browser) it is best to let the plugin
+                    determine the capabilities of the browser.
+                </p>
+                <pre>$('.outputTypes').each(function () {
+    $(this).qr({outputType: $(this).data('output-type')});
+});</pre>
+                <ol class="inline-output">
+                    <li class="outputTypes" data-output-type="canvas">Output type test</li>
+                    <li class="outputTypes" data-output-type="image">Output type test</li>
+                    <li class="outputTypes" data-output-type="table">Output type test</li>
+                </ol>
+            </article>
+        </section>
+    </body>
+</html>

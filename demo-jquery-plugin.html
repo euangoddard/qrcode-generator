@@ -1,0 +1,126 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Interactive demo for $.qr()</title>
+        <style>
+            body, input, textarea {
+                font-family: Helvetica,arial,sans-serif;
+            }
+            input[type="text"] {
+                width: 20px;
+                text-align: right;
+            }
+            label {
+                display: inline-block;
+                line-height: 1.2em;
+                margin-right: 1em;
+                
+               }
+            #output {
+                overflow: hidden;
+            }
+            .output-wrap {
+                display: block;
+                margin-right: 1em;
+                margin-top: 0;
+                float: left;
+                width: 30%;
+            }
+        </style>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+        <script src="js/qrcode.js"></script>
+        <script src="js/jquery.qr.js"></script>
+        <script>
+            $(function () {
+                $('#input-form').submit(function (event_object) {
+                    event_object.preventDefault();
+                    var input_text = $('#input-text').val();
+                    var qr_type = parseInt($('#qr-type').val());
+                    var error_correction = $('#error-correction').val();
+                    var cell_size = parseInt($('#cell-size').val());
+                    var margin_size = parseInt($('#margin-size').val());
+                    
+                    try {
+                        var params = {
+                            typeNumber: qr_type,
+                            errorCorrectLevel: error_correction,
+                            cellSize: cell_size,
+                            marginSize: margin_size,
+                            outputType: 'table',
+                            source: input_text
+                        };
+	                    $('#table-output').qr(params);
+	                    
+	                    params.outputType = 'image';
+	                    $('#image-output').qr(params);
+	                    
+	                    params.outputType = 'canvas';
+	                    $('#canvas-output').qr(params);
+                    } catch (exc) {
+                        alert(exc);
+                    }
+                }).trigger('submit');
+            });
+        </script>
+    </head>
+    <body>
+        <h1>Interactive demo for $.qr()</h1>
+        <section id="input">
+            <form id="input-form">
+                <label>
+                    Input text<br />
+                    <textarea id="input-text">Test qrcode-generator</textarea>
+                </label>
+                <br/>
+                <label>
+                    QR type 
+                    <select id="qr-type">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4" selected="selected">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </select>
+                </label>
+                <label>
+                    Error correction 
+                    <select id="error-correction">
+                        <option value="L">L</option>
+                        <option value="M" selected="selected">M</option>
+                        <option value="Q">Q</option>
+                        <option value="H">H</option>
+                    </select>
+                </label>
+                <label>
+                    Cell size 
+                    <input id="cell-size" type="text" value="2" />
+                </label>
+                <label>
+                    Margin
+                    <input id="margin-size" type="text" value="2" />
+                </label>
+                <button type="submit">Update</button>
+            </form>
+        </section>
+        <section id="output">
+            <h2>Output</h2>
+            <div class="output-wrap">
+	            <h3>Image</h3>
+	            <div id="image-output"></div>
+            </div>
+            <div class="output-wrap">
+	            <h3>Table</h3>
+	            <div id="table-output"></div>
+            </div>
+            <div class="output-wrap">
+	            <h3>Canvas</h3>
+	            <div id="canvas-output"></div>
+            </div>
+        </section>
+    </body>
+</html>
