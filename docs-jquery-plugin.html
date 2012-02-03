@@ -80,16 +80,6 @@
             <pre>$('#defaults').qr();</pre>
             <div class="output" id="defaults">$('#defaults').qr with no options passed</div>
         </section>
-        <!-- 
-        <section>
-            <h2>Unicode support</h2>
-            <p>
-                The qr plugin can encode any unicode string.
-            </p>
-            <pre>$('#unicode').qr();</pre>
-            <div class="output" id="unicode">私の名前はユアンです。</div>
-        </section>
-         -->
         <section>
             <h2>Options</h2>
             <p>
@@ -260,6 +250,15 @@
                     <li class="outputTypes" data-output-type="image">Output type test</li>
                     <li class="outputTypes" data-output-type="table">Output type test</li>
                 </ol>
+            </article>
+            <article>
+                <h3>Unicode support</h3>
+                <p>
+                    The QR plugin can encode any unicode string, but needs to be
+                    instructed. By default unicode support is disabled.
+                </p>
+                <pre>$('#unicode').qr({unicode: true});</pre>
+                <div class="output" id="unicode">私の名前はユアンです。</div>
             </article>
         </section>
     </body>

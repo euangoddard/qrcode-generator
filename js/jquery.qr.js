@@ -89,10 +89,6 @@
             } else {
                 var sourceText = $element.text();
             }
-            if (params.unicode===true) {
-                // encode unicode strings
-                sourceText = unescape(encodeURIComponent(sourceText));
-            }
             
             if (!sourceText) {
                 log(
@@ -101,6 +97,12 @@
                 );
                 return true;
             }
+
+            if (params.unicode) {
+                // Encode unicode strings
+                sourceText = unescape(encodeURIComponent(sourceText));
+            }
+            
             // Build the qr code
             var _qr = qrcode(params.typeNumber, params.errorCorrectLevel);
             _qr.addData(sourceText);
